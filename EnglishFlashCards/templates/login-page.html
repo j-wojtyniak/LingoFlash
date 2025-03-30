@@ -1,0 +1,42 @@
+{% extends "base-template.html" %} {% block title %}Log in{% endblock %} {% block content %}
+
+<div class="top-rectangle top-rectangle--register">
+  <a class="app-name app-name--register" href="{{ url_for('main_page') }}">LingoFlash</a>
+</div>
+
+<div class="register-container">
+  <form class="register-form" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <p class="register-title">Log in</p>
+
+    <!--USERNAME-->
+    {{ form.username.label }} {{ form.username }} {% if form.username.errors %}
+    <span class="error">{{ form.username.errors[0] }}</span>
+    {% endif %} {% if message %}
+    <span class="error">{{ message }}</span>
+    {% endif %}
+
+    <!--PASSWORD-->
+    {{ form.password.label }} {{ form.password }} {% if form.password.errors %}
+    <span class="error">{{ form.password.errors[0] }}</span>
+    {% endif %} {% if message_password %}
+    <span class="error">{{ message_password }}</span>
+    {% endif %}
+
+    <button type="submit" class="button button--login">Log in</button>
+
+    <div class="signin-container">
+      <p class="message-signin">Forgot your password?</p>
+      <a class="message-signin-link" href="#">Remind me!</a>
+    </div>
+  </form>
+</div>
+
+<svg class="main-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+  <path
+    fill="#FF8A00"
+    fill-opacity="1"
+    d="M0,96L18.5,85.3C36.9,75,74,53,111,37.3C147.7,21,185,11,222,21.3C258.5,32,295,64,332,96C369.2,128,406,160,443,149.3C480,139,517,85,554,80C590.8,75,628,117,665,133.3C701.5,149,738,139,775,133.3C812.3,128,849,128,886,138.7C923.1,149,960,171,997,197.3C1033.8,224,1071,256,1108,224C1144.6,192,1182,96,1218,53.3C1255.4,11,1292,21,1329,42.7C1366.2,64,1403,96,1422,112L1440,128L1440,320L1421.5,320C1403.1,320,1366,320,1329,320C1292.3,320,1255,320,1218,320C1181.5,320,1145,320,1108,320C1070.8,320,1034,320,997,320C960,320,923,320,886,320C849.2,320,812,320,775,320C738.5,320,702,320,665,320C627.7,320,591,320,554,320C516.9,320,480,320,443,320C406.2,320,369,320,332,320C295.4,320,258,320,222,320C184.6,320,148,320,111,320C73.8,320,37,320,18,320L0,320Z"
+  ></path>
+</svg>
+{% endblock %}

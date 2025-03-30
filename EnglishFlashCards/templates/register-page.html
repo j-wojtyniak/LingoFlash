@@ -1,0 +1,48 @@
+{% extends "base-template.html" %} {% block title %}Register{% endblock %} {% block content %}
+
+<div class="top-rectangle top-rectangle--register">
+  <a class="app-name app-name--register" href="{{ url_for('main_page') }}">LingoFlash</a>
+</div>
+
+<div class="register-container">
+  <form class="register-form" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    <p class="register-title">Create new account</p>
+
+    <!--Name-->
+    {{ form.name.label }} {{ form.name(class="input-register") }} {% if form.name.errors %}
+    <span class="error">{{ form.name.errors[0] }}</span>
+    {% endif %}
+
+    <!--Username-->
+    {{ form.username.label }} {{ form.username(class="input-register") }} {% if form.username.errors %}
+    <span class="error">{{ form.username.errors[0] }}</span>
+    {% endif %} {% if message %}
+    <span class="error">{{ message }}</span>
+    {% endif %}
+
+    <!--Password-->
+    {{ form.password.label }} {{ form.password(class="input-register") }} {% if form.password.errors %}
+    <span class="error">{{ form.password.errors[0] }}</span>
+    {% endif %}
+
+    <!--Submit-->
+    <button type="submit" class="button button--signup">Register</button>
+
+    <!--Sign in link-->
+    <div class="signin-container">
+      <p class="message-signin">Already have an account?</p>
+      <a class="message-signin-link" href="{{ url_for('login_page') }}">Sign in!</a>
+    </div>
+  </form>
+</div>
+<svg class="main-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+  <path
+    fill="#FF8A00"
+    fill-opacity="1"
+    d="M0,320L48,293.3C96,267,192,213,288,202.7C384,192,480,224,576,229.3C672,235,768,213,864,176C960,139,1056,85,1152,96C1248,107,1344,181,1392,218.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+  ></path>
+</svg>
+
+{% endblock %}

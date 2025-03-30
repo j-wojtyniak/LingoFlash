@@ -1,0 +1,24 @@
+{% extends "base-template.html" %}
+{% block title %}LingoFlash {% endblock %}
+
+
+{% block content %}
+<div class="top-rectangle top-rectangle--main">
+    <p class="app-name app-name--title">LingoFlash</p>
+
+    <p class="slogan-text">"Flash into fluency"</p>
+
+</div>
+
+<div class="content-container">
+    <div class="buttons-container buttons-container--main">
+        <a class="button login-button" href="{{ url_for('login_page') }}">Login</a>
+        <a class="button register-button" href="{{ url_for('register_page') }}">Register</a>
+    </div>
+</div>
+<svg class="main-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <path fill="#FF8A00" fill-opacity="1"
+          d="M0,224L30,240C60,256,120,288,180,272C240,256,300,192,360,181.3C420,171,480,213,540,192C600,171,660,85,720,58.7C780,32,840,64,900,101.3C960,139,1020,181,1080,208C1140,235,1200,245,1260,208C1320,171,1380,85,1410,42.7L1440,0L1440,320L1410,320C1380,320,1320,320,1260,320C1200,320,1140,320,1080,320C1020,320,960,320,900,320C840,320,780,320,720,320C660,320,600,320,540,320C480,320,420,320,360,320C300,320,240,320,180,320C120,320,60,320,30,320L0,320Z"></path>
+</svg>
+{% endblock %}
+

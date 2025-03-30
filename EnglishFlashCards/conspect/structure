@@ -1,0 +1,45 @@
+PROJECT NAME: ENGLISH FLASH CARDS
+PROJECT STARTING DATE: 15/03/2025
+USED LANGUAGES: PYTHON, JAVASCRIPT, HTML, CSS
+
+// PROJECT DESCRIPTION:
+Web application dedicated to learning english vocabulary.
+
+The Flask app uses SQL database to store words in a format:
+** (category, english_word, polish_word, short_description_english, short_description_polish, leitner_level,
+next_review, is_hard[bool], is_known[bool]) **
+
+The UI presents: word to translate, short description, input form, submit button that checks the provided translation,
+cancel button that reveals the translation, change language button that lets the user change the language they are
+learning in (presenting word will appear either in polish or in english), category checklist that lets the user check
+the categories they want to learn, percentage of words currently on the highest level of Leitner scale.
+
+The 'next_review' parameter is calculated based on the 'leitner_level' - the word will appear again for revision after
+particular number of days.
+
+The app, after presenting the word, lets the user fill the input with their translation - then checks, if its correct.
+The app uses difflib to check, if, when not completely correct, the provided translation is close to the correct
+spelling.
+After providing the correct translation, the word's 'leitner_level' attribute is increased by 1. The frequency of
+word's appearance is determined by its leitner_level (0 - most frequent, 5 - least frequent). If user provides a wrong
+translation to a word that's in a higher Leitner level, then it's value is reduced back to 0. If the word, albeit marked
+as the lowest in Leitner scale, has been translated incorrectly 3 times in a row, will be marked as is_hard=True - meaning
+it will appear most often.
+If user provides a correct translation to a word 8 times (meaning it reaches level 8 on Leitner scale), a popup window
+will appear asking, if the word should be marked as 'known'- if so, its 'is_known' parameter will be changed to True
+and the word will no longer be available for learning.
+
+The app works with authentication - each registered user can add their own words to learn.
+
+// PROJECT PLAN:
+1. Create a prototype of the .html template for the login/register page
+2. Create a prototype of the .html template for the flash cards
+3. Create a Flask app that displays the login/register page.
+    3a. Create the functionality for registering new users and logging in
+4. Create the database to store the words
+5. Add sample words to the database to check their rendering
+    5a. Display a random word from the database, showcasing the word and its description
+    5b. Add functionality to the input field and the 'check' button
+    5c. Create function that, after clicking the button, checks if the word is correct or relatively close to the translation
+    5d. Add functionality to the 'cancel' button that reveals the word
+6. Create a functionality to show only words with chosen category
