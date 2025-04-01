@@ -9,6 +9,21 @@
   In the models/**init**.py file, it is best practice to initialize the database to ensure it is properly set up
   before being used in other parts of the application.
 
+- to read a csv file:
+file_variable - file uploaded in a ".csv" format
+        content = file.read().decode("utf-8").splitlines()  # .decode() - converts bytes into text;
+                                                            # .splitlines() - converts the text into a list of lines
+        reader = csv.reader(content)                        # .reader() - converts each line into a list of values
+        next(reader, None)                                  # next() - skips the first row
+
+- to search database:
+        without filtering:
+            stmt = select(DataBase)
+            results = db.session.execute(stmt).scalars().all()          # returns a list of DataBase objects
+            results = db.session.execute(stmt).scalar_one_or_none()     # returns the first object or None
+        with filtering:
+            stmt = select(DataBase).where(DataBase.id == 1)             # will filter DB objects with id = 1 only
+
 // 💻 JAVASCRIPT
 
 // 🌐 HTML

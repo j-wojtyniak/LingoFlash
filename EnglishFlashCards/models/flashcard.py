@@ -14,3 +14,4 @@ class FlashCard(db.Model):
     is_known: Mapped[bool] = mapped_column(default=False, nullable=False)
     correct_count: Mapped[int] = mapped_column(default=0, nullable=False)
     wrong_count: Mapped[int] = mapped_column(default=0, nullable=False)
+    user_id: Mapped[int] = mapped_column(nullable=True)
