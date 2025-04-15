@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
-from sqlalchemy import select
+from sqlalchemy import select, func
 from flask_bootstrap import Bootstrap5
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
@@ -79,7 +79,10 @@ def login_page():
 @app.route("/flashcard")
 @login_required
 def flashcard_page():
-    return render_template("flashcard-page.html")
+    # TODO: Present random flashcard in the flashcard-page
+    stmt = select(FlashCard).where(FlashCard.user_id == current_user.id).order_by(func.random()).limit(1)
+    random_flashcard = db.session.execute(stmt).scalar_one_or_none()
+    return render_template("flashcard-page.html", flashcard=random_flashcard)
 
 
 @app.route("/upload", methods=["GET", "POST"])
@@ -103,7 +106,6 @@ def upload_page():
                     (FlashCard.user_id == current_user.id) & (FlashCard.polish_word == row[0]))
                 word_to_check = db.session.execute(stmt).scalar_one_or_none()
                 if word_to_check and word_to_check.english_word == row[1]:
-                    print(f"skipped {row}!")
                     continue
                 else:
                     if len(row) == 5:
