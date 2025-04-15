@@ -6,28 +6,30 @@
     </div>
   </div>
 </div>
-<div class="top-rectangle top-rectangle--flashcard">
-  <p class="app-name app-name--flashcard">{{ flashcard.polish_word }}</p>
+<div
+  class="top-rectangle top-rectangle--flashcard"
+  data-status="{% if is_correct == 'correct' %}correct{% elif is_correct == 'incorrect' %}incorrect{% else %}none{% endif %}"
+>
+  <p class="app-name app-name--flashcard" data-answer="{{ flashcard.english_word }}">{{ flashcard.polish_word }}</p>
 </div>
 
-<form class="translation-form">
+<form class="translation-form" method="POST">
   <label>
-    <input class="input-flashcard" placeholder="Enter translation..." />
+    <input type="hidden" name="flashcard_id" value="{{ flashcard.id }}" />
+    <input class="input-flashcard" name="user_translation" placeholder="Enter translation..." />
   </label>
-</form>
 
-<div class="content-container">
   <div class="buttons-container buttons-container--flashcard">
     <div class="buttons-row">
-      <a class="button-flashcard button-check" href="#">Check</a>
-      <a class="button-flashcard button-reveal" href="#">Reveal</a>
+      <button type="submit" class="button-flashcard button-check">Check</button>
+      <button type="button" class="button-flashcard button-reveal" id="button-reveal">Reveal</button>
     </div>
 
     <div class="buttons-row">
       <a class="button-flashcard button-quit" href="{{ url_for('home_page') }}">Quit</a>
     </div>
   </div>
-</div>
+</form>
 
 <svg class="main-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
   <path

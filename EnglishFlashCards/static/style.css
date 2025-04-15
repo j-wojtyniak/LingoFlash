@@ -46,6 +46,11 @@ body {
     text-align: center;
 }
 
+.top-rectangle,
+.app-name--flashcard {
+    transition: all 0.3s ease-in-out;
+}
+
 .top-rectangle--main {
     height: 50%;
     align-items: center;
@@ -114,7 +119,10 @@ input[type="file"] {
 
 .buttons-container--flashcard {
     position: absolute;
-    top: 70%;
+    margin-top: 5%;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .buttons-row {

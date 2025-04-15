@@ -76,13 +76,38 @@ def login_page():
     return render_template("login-page.html", form=form)
 
 
-@app.route("/flashcard")
+@app.route("/flashcard", methods=["GET", "POST"])
 @login_required
 def flashcard_page():
+    is_correct = False
     # TODO: Present random flashcard in the flashcard-page
+
+    if request.method == "POST":
+        user_translation = request.form.get("user_translation")
+        flashcard_id = int(request.form.get("flashcard_id"))
+
+        stmt = select(FlashCard).where(FlashCard.id == flashcard_id)
+        flashcard_to_compare = db.session.execute(stmt).scalar_one_or_none()
+
+        if user_translation.lower() == flashcard_to_compare.english_word.lower():
+            is_correct = 'correct'
+            flashcard_to_compare.correct_count += 1
+            flashcard_to_compare.consecutive += 1
+            db.session.commit()
+
+            return render_template("flashcard-page.html", flashcard=flashcard_to_compare,
+                                   is_correct=is_correct)
+        elif user_translation.lower() != flashcard_to_compare.english_word.lower():
+            is_correct = 'incorrect'
+            flashcard_to_compare.wrong_count += 1
+            db.session.commit()
+
+            return render_template("flashcard-page.html", flashcard=flashcard_to_compare,
+                                   is_correct=is_correct)
+
     stmt = select(FlashCard).where(FlashCard.user_id == current_user.id).order_by(func.random()).limit(1)
     random_flashcard = db.session.execute(stmt).scalar_one_or_none()
-    return render_template("flashcard-page.html", flashcard=random_flashcard)
+    return render_template("flashcard-page.html", flashcard=random_flashcard, is_correct=is_correct)
 
 
 @app.route("/upload", methods=["GET", "POST"])
