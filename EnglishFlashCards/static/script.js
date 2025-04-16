@@ -41,7 +41,7 @@ function handleFlashCardFeedback() {
   if (status === "correct" || status === "incorrect") {
     setTimeout(() => {
       window.location.href = "/flashcard";
-    }, 1500);
+    }, 2000);
   }
 
   const buttonReveal = document.querySelector("#button-reveal");
@@ -52,7 +52,7 @@ function handleFlashCardFeedback() {
 
     setTimeout(() => {
       window.location.href = "/flashcard";
-    }, 1500);
+    }, 2000);
   });
 }
 

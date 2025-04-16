@@ -8,6 +8,7 @@ from models import init_app, db, User, FlashCard
 from forms import RegisterForm, LoginForm
 from flask_migrate import Migrate
 import csv
+from utils import get_random_flashcard
 
 # CONFIGURING AND INITIALIZING THE APP
 app = Flask(__name__)
@@ -80,33 +81,47 @@ def login_page():
 @login_required
 def flashcard_page():
     is_correct = False
-    # TODO: Present random flashcard in the flashcard-page
 
+    # SUBMITTING USER'S TRANSLATION
     if request.method == "POST":
         user_translation = request.form.get("user_translation")
         flashcard_id = int(request.form.get("flashcard_id"))
 
         stmt = select(FlashCard).where(FlashCard.id == flashcard_id)
-        flashcard_to_compare = db.session.execute(stmt).scalar_one_or_none()
+        flashcard = db.session.execute(stmt).scalar_one_or_none()
 
-        if user_translation.lower() == flashcard_to_compare.english_word.lower():
+        # USER'S TRANSLATION IS CORRECT
+        if user_translation.lower() == flashcard.english_word.lower():
             is_correct = 'correct'
-            flashcard_to_compare.correct_count += 1
-            flashcard_to_compare.consecutive += 1
+            flashcard.correct_count += 1
+            # TODO: Upgrade the leitner_score by 1 when consecutive reaches 5
+            flashcard.consecutive += 1
+
+            if flashcard.consecutive == 5:
+                flashcard.leitner_score += 1
+                flashcard.consecutive = 0
             db.session.commit()
 
-            return render_template("flashcard-page.html", flashcard=flashcard_to_compare,
+            return render_template("flashcard-page.html", flashcard=flashcard,
                                    is_correct=is_correct)
-        elif user_translation.lower() != flashcard_to_compare.english_word.lower():
+
+        # USER'S TRANSLATION IS INCORRECT
+        # TODO: Mark the word as hard when consecutive reaches -5
+        elif user_translation.lower() != flashcard.english_word.lower():
             is_correct = 'incorrect'
-            flashcard_to_compare.wrong_count += 1
+            flashcard.wrong_count += 1
+            if flashcard.consecutive > 0:
+                flashcard.consecutive = 0
+            else:
+                flashcard.consecutive -= 1
+                if flashcard.consecutive == -5:
+                    flashcard.is_hard = True
             db.session.commit()
 
-            return render_template("flashcard-page.html", flashcard=flashcard_to_compare,
+            return render_template("flashcard-page.html", flashcard=flashcard,
                                    is_correct=is_correct)
 
-    stmt = select(FlashCard).where(FlashCard.user_id == current_user.id).order_by(func.random()).limit(1)
-    random_flashcard = db.session.execute(stmt).scalar_one_or_none()
+    random_flashcard = get_random_flashcard()
     return render_template("flashcard-page.html", flashcard=random_flashcard, is_correct=is_correct)
 
 
