@@ -61,3 +61,28 @@ window.addEventListener("DOMContentLoaded", () => {
   handleFileUpload();
   handleFlashCardFeedback();
 });
+
+const backgroundOverlay = document.querySelector(".rectangle-overlay");
+const popupOverlay = document.querySelector(".popup-overlay");
+const buttonCancel = document.querySelector(".button-cancel");
+
+const markButton = document.querySelector("#button-known");
+markButton.addEventListener("click", () => {
+  backgroundOverlay.classList.remove("rectangle-inactive");
+  backgroundOverlay.classList.add("rectangle-active");
+  backgroundOverlay.style.pointerEvents = "auto";
+
+  popupOverlay.classList.remove("inactive");
+  popupOverlay.classList.add("active");
+  popupOverlay.style.pointerEvents = "auto";
+});
+
+buttonCancel.addEventListener("click", () => {
+  backgroundOverlay.classList.add("rectangle-inactive");
+  backgroundOverlay.classList.remove("rectangle-active");
+  backgroundOverlay.style.pointerEvents = "none";
+
+  popupOverlay.classList.add("inactive");
+  popupOverlay.classList.remove("active");
+  popupOverlay.style.pointerEvents = "none";
+});

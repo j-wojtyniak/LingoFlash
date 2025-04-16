@@ -81,9 +81,11 @@ def login_page():
 @login_required
 def flashcard_page():
     is_correct = False
+    confirmed = request.form.get("confirm")
+    checked = request.form.get("check")
 
     # SUBMITTING USER'S TRANSLATION
-    if request.method == "POST":
+    if checked:
         user_translation = request.form.get("user_translation")
         flashcard_id = int(request.form.get("flashcard_id"))
 
@@ -92,10 +94,13 @@ def flashcard_page():
 
         # USER'S TRANSLATION IS CORRECT
         if user_translation.lower() == flashcard.english_word.lower():
+            if flashcard.consecutive < 0:
+                flashcard.consecutive = 1
+            else:
+                flashcard.consecutive += 1
+
             is_correct = 'correct'
             flashcard.correct_count += 1
-            # TODO: Upgrade the leitner_score by 1 when consecutive reaches 5
-            flashcard.consecutive += 1
 
             if flashcard.consecutive == 5:
                 flashcard.leitner_score += 1
@@ -106,7 +111,6 @@ def flashcard_page():
                                    is_correct=is_correct)
 
         # USER'S TRANSLATION IS INCORRECT
-        # TODO: Mark the word as hard when consecutive reaches -5
         elif user_translation.lower() != flashcard.english_word.lower():
             is_correct = 'incorrect'
             flashcard.wrong_count += 1
@@ -122,6 +126,11 @@ def flashcard_page():
                                    is_correct=is_correct)
 
     random_flashcard = get_random_flashcard()
+
+    if confirmed:
+        random_flashcard.is_known = True
+        db.session.commit()
+
     return render_template("flashcard-page.html", flashcard=random_flashcard, is_correct=is_correct)
 
 
